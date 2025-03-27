@@ -1,0 +1,32 @@
+name: Reusable Workflow
+run-name: reusable workflow
+on: [push, workflow_dispatch]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - run: echo "running tests"
+
+  test-skipped:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'push'
+    steps:
+      - run: echo "Skipping tests on manual trigger"
+
+  test-successful:
+    needs: [test, test-skipped]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if conditional job failed
+        if: ${{ needs.test.result == 'failure' }}
+        run: exit 1
+      - run: echo "Tests were either intentionally skipped or successful. Continue with deployment"
+
+  deployment:
+    needs: test-successful
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "running deployment"

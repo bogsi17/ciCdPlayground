@@ -1,14 +1,24 @@
 name: Test
-on: [workflow_dispatch, push]
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Deployment environment"
+        required: true
+        type: choice
+        options:
+          - qa
+          - poc
 
+concurrency:
+  group: terraform-${{ inputs.environment }}
 jobs:
     test:
-        concurrency:
-          group: example-group
         runs-on: ubuntu-latest
         steps:
             - name: Sleep for 3 minutes
               run: sleep 180s
             - name: Print success
-              run: echo "Success"
+              run: echo "Success "
               

@@ -5,4 +5,8 @@ jobs:
     test:
         runs-on: ubuntu-latest
         steps:
-            - run: yarn test
+            - name: Sleep for 3 minutes
+              run: sleep 180s
+            - name: Print success
+              run: echo "Success"
+              

@@ -18,6 +18,10 @@ jobs:
         run: echo ${{ needs }}
       - name: Print job context 2
         run: echo ${{ needs.test }}
+      - name: Print job context 3
+        run: echo ${{ needs.test.result }}
+      - name: Print job context 4
+        run: echo ${{ needs.test.status }}        
       - name: Fail if conditional job failed
         if: ${{ needs.test.result != 'success' }}
         run: exit 1

@@ -13,7 +13,11 @@ jobs:
     needs: test
     if: always()
     runs-on: ubuntu-latest
-    steps: 
+    steps:
+      - name: Print job context
+        run: echo ${{ needs }}
+      - name: Print job context 2
+        run: echo ${{ needs.test }}
       - name: Fail if conditional job failed
         if: ${{ needs.test.result != 'success' }}
         run: exit 1

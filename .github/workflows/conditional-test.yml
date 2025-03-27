@@ -23,9 +23,9 @@ jobs:
       - name: Print job context 4
         run: echo ${{ needs.test.status }}        
       - name: Fail if conditional job failed
-        if: ${{ needs.test.result != 'success' }}
+        if: ${{ needs.test.result != 'success' && needs.test.result != 'skipped' }}
         run: exit 1
-      - run: echo "final run"
+      - run: echo "Tests were either intentionally skipped or successful. Continue with deployment"
   deployment:
     needs: test-successful
     runs-on: ubuntu-latest

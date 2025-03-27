@@ -1,0 +1,23 @@
+name: conditonal-test
+run-name: Run conditional test
+on: [push, workflow_dispatch]
+
+jobs:
+  test:
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/test.yml
+  test-successful:
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Fail if conditional job failed
+        if: ${{ needs.test.result != 'success' }}
+        run: exit 1
+      - run: echo "final run"
+  deployment:
+    needs: test-successful
+    runs-on: ubuntu-latest
+    steps:
+      - name: run deployment
+        run: echo "running deployment"

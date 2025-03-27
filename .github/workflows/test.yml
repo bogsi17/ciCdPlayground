@@ -3,6 +3,8 @@ on: [workflow_dispatch, push]
 
 jobs:
     test:
+        concurrency:
+          group: example-group
         runs-on: ubuntu-latest
         steps:
             - name: Sleep for 3 minutes

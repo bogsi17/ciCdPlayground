@@ -14,14 +14,6 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: Print job context
-        run: echo ${{ needs }}
-      - name: Print job context 2
-        run: echo ${{ needs.test }}
-      - name: Print job context 3
-        run: echo ${{ needs.test.result }}
-      - name: Print job context 4
-        run: echo ${{ needs.test.status }}        
       - name: Fail if conditional job failed
         if: ${{ needs.test.result != 'success' && needs.test.result != 'skipped' }}
         run: exit 1

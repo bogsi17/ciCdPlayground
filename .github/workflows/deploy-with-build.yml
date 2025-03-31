@@ -28,7 +28,6 @@ jobs:
   build-and-push-image:
     name: Build and push image
     runs-on: ubuntu-latest
-    if: ${{ needs.check-image-exists.outputs.image_exists == 'false' }}
     steps:
       - name: Check if image exists
         run: |

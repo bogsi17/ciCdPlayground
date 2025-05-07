@@ -3,11 +3,6 @@ run-name: Run conditional test
 on: 
   push:
   workflow_dispatch:
-    inputs:
-      environment:
-        description: "The ${{ github.sha }}"
-        required: true
-        type: string
 jobs:
   test:
     runs-on: ubuntu-latest

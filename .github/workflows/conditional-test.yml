@@ -10,7 +10,7 @@ jobs:
       - name: Step 1
         run: |
           echo "This step will fail"
-          exit 1
+          sefdesd
       - name: Step 2
         run: echo "Continued after failure"
   after-test:

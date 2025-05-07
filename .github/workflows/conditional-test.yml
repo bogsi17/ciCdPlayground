@@ -8,26 +8,15 @@ on:
         description: "The ${{ github.sha }}"
         required: true
         type: string
-
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     steps:
-      - name: run test
-        run: echo "test successful"
-  test-successful:
-    needs: test
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fail if conditional job failed
-        if: ${{ needs.test.result != 'success' && needs.test.result != 'skipped' }}
-        run: exit 1
-      - run: echo "Tests were either intentionally skipped or successful. Continue with deployment"
-  deployment:
-    needs: test-successful
-    runs-on: ubuntu-latest
-    steps:
-      - name: run deployment
-        run: echo "running deployment"
+      - name: Step 1
+        run: echo "This step will pass"
+      - name: Step 2
+        id: step2
+        continue-on-error: true
+        run: echo "This step will fail" && exit 1
+      - name: Step 3
+        run: echo "And this step ..."

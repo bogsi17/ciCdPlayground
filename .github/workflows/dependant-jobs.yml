@@ -37,6 +37,20 @@ jobs:
         steps:
             - name: step
               run: echo "alwaysjob"
+    dependsonalwaysjob:
+        runs-on: ubuntu-latest
+        needs: alwaysjob
+        if: needs.alwaysjob.result == 'success'
+        steps:
+            - name: step
+              run: echo "alwaysjob"
+    dependsonalwaysjob2:
+        runs-on: ubuntu-latest
+        needs: alwaysjob
+        if: always && needs.alwaysjob.result == 'success'
+        steps:
+            - name: step
+              run: echo "alwaysjob2"
     alwaysandsuccessjob:
         runs-on: ubuntu-latest
         needs: base

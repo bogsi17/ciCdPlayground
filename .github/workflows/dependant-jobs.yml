@@ -1,8 +1,7 @@
 name: dependant-job-test
 run-name: Run jobs with basejob ${{ inputs.basejob }}
 on:
-    workflow_dispatccccccunijvguubknlrgkgbictgrjrvchhlruvuikklr
-    ch:
+    workflow_dispatch:
         inputs:
             basejob:
                 description: How the base job should behave

@@ -1,7 +1,8 @@
 name: dependant-job-test
 run-name: Run jobs with basejob ${{ inputs.basejob }}
 on:
-    workflow_dispatch:
+    workflow_dispatccccccunijvguubknlrgkgbictgrjrvchhlruvuikklr
+    ch:
         inputs:
             basejob:
                 description: How the base job should behave
@@ -47,7 +48,7 @@ jobs:
     dependsonalwaysjob2:
         runs-on: ubuntu-latest
         needs: alwaysjob
-        if: always && needs.alwaysjob.result == 'success'
+        if: always() && needs.alwaysjob.result == 'success'
         steps:
             - name: step
               run: echo "alwaysjob2"

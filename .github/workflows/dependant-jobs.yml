@@ -1,0 +1,53 @@
+name: dependant-job-test
+run-name: Run jobs with basejob ${{ inputs.basejob }}
+on:
+    workflow_dispatch:
+        inputs:
+            basejob:
+                description: How the base job should behave
+                type: choice
+                options:
+                    - pass
+                    - fail
+                    - skip
+jobs:
+    base:
+        runs-on: ubuntu-latest
+        if: inputs.basejob != 'skip'
+        steps:
+            - name: step
+              run: echo "basejob"
+            - name: pass-or-fail
+              run: |
+                if [ ${{ inputs.basejob }} == "fail" ]; then
+                   echo "basejob fails"
+                   exit 1
+                fi
+                echo "basejob succeeds"
+    dependsjob:
+        runs-on: ubuntu-latest
+        needs: base
+        steps:
+            - name: step
+              run: echo "dependsjob"
+    alwaysjob:
+        runs-on: ubuntu-latest
+        needs: base
+        if: always()
+        steps:
+            - name: step
+              run: echo "alwaysjob"
+    alwaysandsuccessjob:
+        runs-on: ubuntu-latest
+        needs: base
+        if: always() && needs.base.result == 'success'
+        steps:
+            - name: step
+              run: echo "alwaysandsuccessjob"
+    justonsuccess:
+        runs-on: ubuntu-latest
+        needs: base
+        if: needs.base.result == 'success'
+        steps:
+            - name: step
+              run: echo "justonsuccess"

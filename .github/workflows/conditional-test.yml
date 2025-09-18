@@ -1,7 +1,6 @@
 name: conditonal-test
 run-name: Run conditional test
-on: 
-  push:
+on:
   workflow_dispatch:
 jobs:
   test:

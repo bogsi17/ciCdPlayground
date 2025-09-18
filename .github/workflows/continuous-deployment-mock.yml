@@ -34,6 +34,7 @@ jobs:
     uses: ./.github/workflows/deploy-mock.yml
     with:
       environment: ${{ matrix.environment }}
+      let-deployment-fail: ${{inputs.let-deployment-fail}}
 
   slack-notification:
     needs: [deploy, test]

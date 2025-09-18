@@ -15,7 +15,12 @@ jobs:
     name: Test
     steps:
       - name: Run tests
-        run: echo "Running Tests"
+        run: |
+          echo "Running Tests"
+          if [ ${{ inputs.let-tests-fail }} == "true" ]; then
+            echo "tests fail"
+            exit 1
+          fi
   optional-tests:
     runs-on: ubuntu-latest
     name: Optional Tests

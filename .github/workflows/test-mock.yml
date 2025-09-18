@@ -1,0 +1,25 @@
+name: test-mock.yml
+on:
+  workflow_call:
+    inputs:
+      run-optional-tests:
+        type: boolean
+        required: true
+      let-tests-fail:
+        type: boolean
+        required: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test
+    steps:
+      - name: Run tests
+        run: echo "Running Tests"
+  optional-tests:
+    runs-on: ubuntu-latest
+    name: Optional Tests
+    if: inputs.run-optional-tests == 'true'
+    steps:
+      - name: Run optional tests
+        run: echo "Running optional tests"

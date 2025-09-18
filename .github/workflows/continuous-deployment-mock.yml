@@ -1,0 +1,46 @@
+name: Continuous Deployment Mock
+
+on:
+  workflow_dispatch:
+    inputs:
+      run-optional-tests:
+        type: boolean
+        required: true
+        description: Whether to run optional tests
+      let-tests-fail:
+        type: boolean
+        required: true
+        description: Whether tests should fail
+      let-deployment-fail:
+        type: boolean
+        required: false
+        default: false
+        description: Let deployment fail
+
+jobs:
+  test:
+    permissions: {}
+    uses: ./.github/workflows/test-mock.yml
+    with:
+      let-tests-fail: ${{inputs.let-tests-fail}}
+      run-optional-tests: ${{inputs.run-optional-tests}}
+
+  deploy:
+    needs: test
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: [qa, test]
+    uses: ./.github/workflows/deploy-mock.yml
+    with:
+      environment: ${{ matrix.environment }}
+
+  slack-notification:
+    needs: [deploy, test]
+    runs-on: ubuntu-latest
+    if: ${{!cancelled()}}
+    steps:
+      - name: Send notification
+        run: |
+          echo "Test result: ${{ needs.test.result }}"
+          echo "Deploy result: ${{ needs.deploy.result }}"

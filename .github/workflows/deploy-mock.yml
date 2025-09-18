@@ -1,0 +1,34 @@
+name: deploy-mock.yml
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: validate
+        run: echo "validate inputs"
+  validate-permissions:
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: validate permission
+        run: echo "validate permissions"
+  deploy-1:
+    runs-on: ubuntu-latest
+    needs: [validate, validate-permissions]
+    if: needs.validate-permissions.result == 'success'
+    steps:
+      - name: First deploy
+        run: echo "first deploy"
+  deploy-2:
+    runs-on: ubuntu-latest
+    needs: deploy-1
+    steps:
+      - name: Second deploy
+        run: echo "second deploy"

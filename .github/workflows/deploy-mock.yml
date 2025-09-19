@@ -9,6 +9,9 @@ on:
       let-deployment-fail:
         required: false
         type: boolean
+    secrets:
+      slack_webhook_url:
+        required: true
 
 jobs:
   validate:
@@ -32,24 +35,18 @@ jobs:
       - name: Let it fail
         if: inputs.let-deployment-fail == 'true'
         run: exit 1
-      - name: Notify pending approval
+      - name: Post a message in a channel
         uses: slackapi/slack-github-action@v2.1.1
         with:
-          webhook: ${{ secrets.SLACK_ALLGEMEIN_CHANNEL_WEBHOOK_URL }}
+          webhook: ${{ secrets.slack_webhook_url }}
           webhook-type: incoming-webhook
           payload: |
-            text: ":hourglass: Approval required :hourglass:"
+            text: "*GitHub Action build result*: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
             blocks:
               - type: "section"
                 text:
                   type: "mrkdwn"
-                  text: "Data replication workflow `${{ github.workflow }}` requires approval"
-              - type: "section"
-                fields:
-                  - type: "mrkdwn"
-                    text: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View workflow run>"
-                  - type: "mrkdwn"
-                    text: "*Triggered by:*\n${{ github.actor }}"
+                  text: "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
   deploy-2:
     runs-on: ubuntu-latest
     environment: production

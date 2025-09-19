@@ -35,6 +35,8 @@ jobs:
     with:
       environment: ${{ matrix.environment }}
       let-deployment-fail: ${{inputs.let-deployment-fail}}
+    secrets:
+      slack_webhook_url: ${{ secrets.SLACK_ALLGEMEIN_CHANNEL_WEBHOOK_URL }}
 
   slack-notification:
     needs: [deploy, test]
